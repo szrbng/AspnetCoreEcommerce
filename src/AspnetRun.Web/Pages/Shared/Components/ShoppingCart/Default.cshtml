@@ -1,0 +1,59 @@
+﻿@model AspnetRun.Web.ViewModels.CartViewModel
+@{
+    ViewData["Title"] = "My Shopping Cart";
+}
+
+
+<!-- Mini Cart Wrap Start -->
+<div class="mini-cart-wrap">
+
+    <!-- Mini Cart Top -->
+    <div class="mini-cart-top">
+
+        <button class="close-cart">Close Cart<i class="icofont icofont-close"></i></button>
+
+    </div>
+
+    <!-- Mini Cart Products -->
+    <ul class="mini-cart-products">
+
+        @if (Model.Items.Any())
+        {
+            @foreach (var cartItem in Model.Items)
+            {
+                <li>
+                    <a asp-page="ProductDetail" asp-route-slug="@cartItem.Product.Slug" class="image"><img src="assets/images/product/@cartItem.Product.ImageFile" alt="Product Image"></a>
+                    <div class="content">
+                        <a asp-page="ProductDetail" asp-route-slug="@cartItem.Product.Slug" class="title">@cartItem.Product.Name</a>
+                        <span class="price">Price: @cartItem.UnitPrice</span>
+                        <span class="qty">Qty: @cartItem.Quantity</span>
+                    </div>
+
+                    <form asp-page-handler="removetocart" method="post">
+                        <button class="remove"><i class="fa fa-trash-o"></i></button>
+                        <input type="hidden" asp-for="@Model.Id" name="cartId" />
+                        <input type="hidden" asp-for="@cartItem.Id" name="cartItemId" />
+                    </form>
+
+                </li>
+            }
+        }
+        
+    </ul>
+
+    <!-- Mini Cart Bottom -->
+    <div class="mini-cart-bottom">
+
+        <h4 class="sub-total">Total: <span>$@Model.GrandTotal</span></h4>
+
+        <div class="button">
+            <a asp-page="CheckOut">CHECK OUT</a>
+        </div>
+
+    </div>
+
+</div>
+<!-- Mini Cart Wrap End -->
+
+<!-- Cart Overlay -->
+<div class="cart-overlay"></div>
